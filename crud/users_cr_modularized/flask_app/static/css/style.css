@@ -1,0 +1,14 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #fccb90;
+  background: -webkit-linear-gradient(to right, rgba(252, 203, 144, 0.6), rgba(213, 126, 235, 0.6));
+  background: linear-gradient(to right, rgba(170, 113, 42, 0.6), rgba(20, 106, 212, 0.6))
+}
+
+
+
