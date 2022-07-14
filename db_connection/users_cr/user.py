@@ -1,6 +1,4 @@
-# import the function that will return an instance of a connection
 from mysqlconnection import connectToMySQL
-# model the class after the friend table from our database
 
 DATABASE = 'users_schema'
 class User:
@@ -12,22 +10,40 @@ class User:
         self.password = data['password']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
-    # Now we use class methods to query our database
+
     @classmethod
     def get_all(cls):
         query = "SELECT * FROM users;"
-        # make sure to call the connectToMySQL function with the schema you are targeting.
         results = connectToMySQL(DATABASE).query_db(query)
-        # Create an empty list to append our instances of friends
         users = []
-        # Iterate over the db results and create instances of friends with cls.
-        for user in results:
-            users.append( cls(user) )
+        for result in results:
+            users.append( User(result) )
         return users
 
     @classmethod
     def save(cls, data):
         query = "INSERT INTO users (first_name, last_name, email, password) VALUES (%(first_name)s, %(last_name)s, %(email)s, %(password)s);"
-        return connectToMySQL(DATABASE).query_db(query, data)
-            
+        result = connectToMySQL(DATABASE).query_db(query, data)
+        return result
+    
+    @classmethod
+    def show_one(cls, data):
+        query = "SELECT * FROM users WHERE id = %(id)s;"
+        result = connectToMySQL(DATABASE).query_db(query, data)
+        return User(result[0])
+
+    @classmethod
+    def update(cls, data):
+        query = "UPDATE users SET first_name = %(first_name)s, last_name = %(last_name)s, email = %(email)s, password = %(password)s WHERE id = %(id)s;"
+        result = connectToMySQL(DATABASE).query_db(query, data)
+        return result
+
+    @classmethod
+    def delete(cls, data):
+        query = "DELETE FROM users WHERE id = %(id)s;"
+        result = connectToMySQL(DATABASE).query_db(query, data)
+        return result
+
+        
+        
 
