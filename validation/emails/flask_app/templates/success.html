@@ -1,0 +1,27 @@
+{% extends "base.html" %} 
+
+{% block title %}Success Page{% endblock %} 
+
+{% block content %}
+
+<div class="container">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <ul class="flashes">
+            {% for message in messages %}
+              <li>{{message}}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+    {% endwith %}
+    <h2 class="display-2">Email Addresses Entered</h2>
+    
+    {% for email in emails %}
+    <div class="row">
+        <div class="col">{{email.name}}</div>
+        <div class="col">{{email.created_at}}</div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

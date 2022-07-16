@@ -1,0 +1,30 @@
+{% extends "base.html" %} 
+
+{% block title %}Email Validation{% endblock %} 
+
+{% block content %}
+
+<div class="container">
+
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <ul class="flashes">
+            {% for message in messages %}
+              <li>{{message}}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
+
+      <form action="/email/insert" method="post">
+        <div class="form-group">
+          <label for="name">Email:</label>
+          <input type="text" class="form-control" id="name" name="name" aria-describedby="name">
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+  
+</div>
+
+    
+{% endblock %}
