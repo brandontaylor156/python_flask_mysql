@@ -2,6 +2,8 @@ from flask_app.config.mysqlconnection import connectToMySQL
 from flask_app.models import message
 from flask_app import app, flash
 from pprint import pprint
+from datetime import date, datetime
+import math
 import re
 
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$') 
@@ -57,8 +59,13 @@ class User:
 
         results = connectToMySQL(DATABASE).query_db(query, data)
 
+        if len(results) < 1:
+            return False
+            
         user = User(results[0])
         
+        today = datetime.today()
+
         for result in results:
             message_dict = {
                 'id': result['messages.id'], 
@@ -68,6 +75,32 @@ class User:
                 'created_at': result['messages.created_at'], 
                 'updated_at': result['messages.updated_at']
             }
+
+            message_dict['created_at'] = today - message_dict['created_at']
+
+            if message_dict['created_at'].days >= 60:
+                message_dict['created_at'] = str(math.floor(message_dict['created_at'].days / 60)) + " months ago"
+            elif message_dict['created_at'].days >= 30:
+                message_dict['created_at'] = "1 month ago"
+
+            elif message_dict['created_at'].days > 1:
+                message_dict['created_at'] = str(message_dict['created_at'].days) + " days ago"
+            elif message_dict['created_at'].days > 0:
+                message_dict['created_at'] = "1 day ago"
+
+            elif message_dict['created_at'].seconds >= 7200:
+                message_dict['created_at'] = str(math.floor(message_dict['created_at'].seconds / 3600)) + " hours ago"
+            elif message_dict['created_at'].seconds >= 3600:
+                message_dict['created_at'] = "1 hour ago"
+
+            elif message_dict['created_at'].seconds >= 120:
+                message_dict['created_at'] = str(math.floor(message_dict['created_at'].seconds / 60)) + " minutes ago"
+            elif message_dict['created_at'].seconds >= 60:
+                message_dict['created_at'] =  "1 minute ago"
+            else:
+                message_dict['created_at'] = str(message_dict['created_at'].seconds) + " seconds ago"
+            
+
             friend_dict = {
                 'id': result['friends.id'],
                 'first_name': result['friends.first_name'],

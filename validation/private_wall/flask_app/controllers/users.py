@@ -35,13 +35,14 @@ def user_dashboard():
         'id' : session['user_id']
     }
     user_info = user.User.select_all_user_attributes(data)
-
+    
     user_info_dict = {}
 
-    for message in user_info.messages:
-        for friend in user_info.friends:
-            if message.sender_id == friend.id:
-                user_info_dict[message] = friend.first_name
+    if user_info:
+        for message in user_info.messages:
+            for friend in user_info.friends:
+                if message.sender_id == friend.id:
+                    user_info_dict[message] = friend.first_name
 
     contact_list = user.User.select_all_users()
 
@@ -74,13 +75,15 @@ def login_user():
 
 @app.route("/user/message/<int:id>", methods=['POST'])
 def insert_message(id):
+    if not message_module.Message.validate_message(request.form):
+        return redirect("/user/dashboard")
+
     data = {
         'message': request.form['message'],
         'sender_id': session['user_id'],
         'receiver_id': id
     }
     new_message = message_module.Message.insert_message(data)
-    pprint(new_message)
     return redirect("/user/dashboard")
 
 @app.route("/message/delete/<int:id>")

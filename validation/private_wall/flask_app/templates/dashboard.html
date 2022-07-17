@@ -20,7 +20,7 @@
       {% for message, sender in user_info_dict.items() %}
       <div class="row bg-gradient mb-2 rounded-3">
         <div class="col-10 p-3 d-flex flex-column">
-          <p class="lead">{{sender}} at {{message.created_at}}</p> 
+          <p class="lead">{{sender}} {{message.created_at}}</p> 
           <p class="lead">{{message.message}}</p>
         </div>
         <div class="col-2 d-flex align-items-center">
@@ -33,13 +33,23 @@
     <div class="col-5 d-flex flex-column gap-2 mb-5">
       <p class="lead mb-3 text-center">Send Messages | <span class="text-dark">{{sent_messages|length}} Message(s) Sent</span></p>
       {% for contact in contact_list %}
+      {% with flash_messages = get_flashed_messages(with_categories=true) %}
       <form action="/user/message/{{contact.id}}" method="post">
+        <input type="hidden" name="contact" value="{{contact.id}}">
         <div class="row">
           <h1 class="lead mb-0 p-0">{{contact.first_name}}</h1>
           <textarea class="form-control" id="message" name="message" rows="3"></textarea>
+          {% if flash_messages %}
+            {% for category, flash_message in flash_messages %}
+              {% if category == contact.id %}
+              <span class="form-text text-danger">{{flash_message}}</span>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
           <button type="submit" class="btn btn-success w-25 ms-auto mt-1">Send</button>
         </div>
       </form>
+      {% endwith %}
       {% endfor %}
   
     </div>

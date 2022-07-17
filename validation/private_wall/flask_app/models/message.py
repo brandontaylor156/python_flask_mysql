@@ -33,3 +33,14 @@ class Message:
         query = "DELETE FROM messages WHERE messages.id = %(id)s"
         results = connectToMySQL(DATABASE).query_db(query, data)
         return  
+
+    @staticmethod
+    def validate_message(message):
+        is_valid = True
+
+        if len(message['message']) < 5:
+            flash("Message must be at least 5 characters long.", int(message['contact']))
+            is_valid = False
+
+        return is_valid
+[]
