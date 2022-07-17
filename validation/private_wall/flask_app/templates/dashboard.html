@@ -1,0 +1,50 @@
+{% extends "base.html" %} 
+
+{% block title %}User Dashboard{% endblock %} 
+
+{% block content %}
+
+<nav class="navbar navbar-dark bg-transparent">
+  <div class="container text-white-50">
+    <h1>CodingDojo Wall</h1>
+    <h2 class="ms-auto">Welcome, {{session['first_name']}}!</h2>
+    <a href="/user/logout" class="btn btn-dark m-3">Log Out</a>
+  </div>
+</nav>
+
+<div class="container text-white-50 mt-3">
+  <div class="row d-flex justify-content-around">
+
+    <div class="col-5">
+      <h3 class="display-6"><span class="text-danger">{{user_info_dict|length}}</span> Message(s) for You</h3>
+      {% for message, sender in user_info_dict.items() %}
+      <div class="row bg-gradient mb-2 rounded-3">
+        <div class="col-10 p-3 d-flex flex-column">
+          <p class="lead">{{sender}} at {{message.created_at}}</p> 
+          <p class="lead">{{message.message}}</p>
+        </div>
+        <div class="col-2 d-flex align-items-center">
+          <a class="btn btn-lg" href="/message/delete/{{message.id}}"><i class="bi bi-trash"></i></a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="col-5 d-flex flex-column gap-2 mb-5">
+      <p class="lead mb-3 text-center">Send Messages | <span class="text-dark">{{sent_messages|length}} Message(s) Sent</span></p>
+      {% for contact in contact_list %}
+      <form action="/user/message/{{contact.id}}" method="post">
+        <div class="row">
+          <h1 class="lead mb-0 p-0">{{contact.first_name}}</h1>
+          <textarea class="form-control" id="message" name="message" rows="3"></textarea>
+          <button type="submit" class="btn btn-success w-25 ms-auto mt-1">Send</button>
+        </div>
+      </form>
+      {% endfor %}
+  
+    </div>
+    
+  </div>
+</div>
+
+{% endblock %}
