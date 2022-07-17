@@ -104,7 +104,7 @@ class User:
             flash("Invalid email address!", 'email')
             is_valid = False
 
-        users = User.select_all()
+        users = User.select_all_users()
         for user_iterator in users:
             if user_iterator.email == user['email']:
                 flash("Email already being used.", 'email')
