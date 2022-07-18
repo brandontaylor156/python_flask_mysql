@@ -36,7 +36,6 @@ def user_login():
         "email": request.form['email'],
     }
     user_in_db = user.User.select_by_email(data)
-    print(user_in_db)
 
     if not user_in_db:
         flash("Invalid Email/Password" , 'login')
