@@ -32,15 +32,7 @@ def user_dashboard():
     data = {
         'id' : session['user_id']
     }
-    user_info = user.User.select_all_user_attributes(data)
-    
-    user_info_dict = {}
-
-    if user_info:
-        for message in user_info.messages:
-            for friend in user_info.friends:
-                if message.sender_id == friend.id:
-                    user_info_dict[message] = friend.first_name
+    user_info = user.User.select_user_contacts_and_messages(data)
 
     contact_list = user.User.select_all_users()
 
@@ -50,7 +42,7 @@ def user_dashboard():
 
     sent_messages = message_module.Message.select_all_sent_messages(data)
 
-    return render_template("dashboard.html", user_info_dict = user_info_dict, contact_list = contact_list, sent_messages=sent_messages)
+    return render_template("dashboard.html", user_info = user_info, contact_list = contact_list, sent_messages=sent_messages)
 
 @app.route("/user/login", methods=['POST'])
 def login_user():

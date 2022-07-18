@@ -54,8 +54,8 @@ class User:
         return User(result[0])
 
     @classmethod
-    def select_all_user_attributes(cls, data):
-        query = "SELECT * FROM users JOIN messages ON users.id = messages.receiver_id JOIN users AS friends ON friends.id = messages.sender_id WHERE users.id = %(id)s ORDER BY messages.created_at DESC"
+    def select_user_contacts_and_messages(cls, data):
+        query = "SELECT * FROM users JOIN messages ON users.id = messages.receiver_id JOIN users AS friends ON friends.id = messages.sender_id WHERE users.id = %(id)s ORDER BY messages.id DESC"
 
         results = connectToMySQL(DATABASE).query_db(query, data)
 
@@ -100,7 +100,6 @@ class User:
             else:
                 message_dict['created_at'] = str(message_dict['created_at'].seconds) + " seconds ago"
             
-
             friend_dict = {
                 'id': result['friends.id'],
                 'first_name': result['friends.first_name'],

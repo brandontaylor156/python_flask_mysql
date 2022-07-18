@@ -16,17 +16,18 @@
   <div class="row d-flex justify-content-around">
 
     <div class="col-5">
-      <h3 class="display-6"><span class="text-danger">{{user_info_dict|length}}</span> Message(s) for You</h3>
-      {% for message, sender in user_info_dict.items() %}
+      <h3 class="display-6"><span class="text-danger">{{user_info.messages|length}}</span> Message(s) for You</h3>
+      {% for message_index in range(user_info.messages|length) %}
       <div class="row bg-gradient mb-2 rounded-3">
         <div class="col-10 p-3 d-flex flex-column">
-          <p class="lead">{{sender}} {{message.created_at}}</p> 
-          <p class="lead">{{message.message}}</p>
+          <p class="lead">{{user_info.friends[message_index].first_name}} {{user_info.messages[message_index].created_at}}</p> 
+          <p class="lead">{{user_info.messages[message_index].message}}</p>
         </div>
         <div class="col-2 d-flex align-items-center">
-          <a class="btn btn-lg" href="/message/delete/{{message.id}}"><i class="bi bi-trash text-danger"></i></a>
+          <a class="btn btn-lg" href="/message/delete/{{user_info.messages[message_index].id}}"><i class="bi bi-trash text-danger"></i></a>
         </div>
       </div>
+    
       {% endfor %}
     </div>
 
