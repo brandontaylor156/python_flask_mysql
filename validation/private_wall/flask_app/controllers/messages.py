@@ -3,6 +3,9 @@ from flask_app.models import message as message_module
 
 @app.route("/user/message/<int:id>", methods=['POST'])
 def insert_message(id):
+    if 'user_id' not in session:
+        return redirect("/")
+
     if not message_module.Message.validate_message(request.form):
         return redirect("/user/dashboard")
 
@@ -16,6 +19,8 @@ def insert_message(id):
 
 @app.route("/message/delete/<int:id>")
 def message_delete(id):
+    if 'user_id' not in session:
+        return redirect("/")
     data = {
         'id': id
     }
