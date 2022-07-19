@@ -28,6 +28,8 @@ def user_insert():
 
 @app.route("/user/dashboard")
 def user_dashboard():
+    if 'user_id' not in session:
+        return redirect("/")
     return render_template("dashboard.html")
 
 @app.route("/user/login", methods=['POST'])

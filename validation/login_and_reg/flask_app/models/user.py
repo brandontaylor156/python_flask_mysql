@@ -84,23 +84,4 @@ class User:
         
 
         return is_valid
-
-    # @classmethod
-    # def get_all_relationships(cls, data):
-    #     query = "SELECT * FROM users LEFT JOIN favorites ON users.id = favorites.author_id LEFT JOIN books ON books.id = favorites.book_id WHERE users.id = %(id)s"
-
-    #     results = connectToMySQL(DATABASE).query_db(query, data)
-
-    #     author = Author(results[0])
-
-    #     for result in results:
-    #         book_dict = {
-    #             'id': result['books.id'], 
-    #             'title': result['title'], 
-    #             'num_of_pages': result['num_of_pages'],
-    #             'created_at': result['books.created_at'], 
-    #             'updated_at': result['books.updated_at']
-    #         }
-    #         author.books.append(book.Book(book_dict))
-    #     return author
         
